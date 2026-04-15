@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>🎵 情绪音乐小厨 · 炖一首歌</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fef9e7 0%, #fff7e6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            margin: 0;
+            color: #2e241b;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 251, 240, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 28px 24px 36px;
+            box-shadow: 0 25px 45px -10px rgba(60, 40, 20, 0.2),
+                        0 8px 18px rgba(0,0,0,0.05),
+                        inset 0 1px 0 0 rgba(255,255,245,0.6);
+            border: 1px solid #f0e7d6;
+        }
+
+        h1 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 2.2rem;
+            letter-spacing: -0.01em;
+            color: #4a3729;
+            margin-bottom: 16px;
+            padding-left: 8px;
+        }
+
+        h1 span {
+            background: #d9c5b0;
+            padding: 5px 16px;
+            border-radius: 80px;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #2b1e14;
+            opacity: 0.8;
+        }
+
+        .subhead {
+            margin-bottom: 28px;
+            margin-top: -8px;
+            padding-left: 12px;
+            color: #7a6856;
+            font-weight: 400;
+            border-left: 4px solid #e3cdb1;
+        }
+
+        /* 食材/标签 选择区域 */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 450;
+            margin-bottom: 18px;
+            color: #4f3e2e;
+            border-bottom: 2px dashed #dccbb8;
+            padding-bottom: 8px;
+        }
+
+        .emoji-icon {
+            font-size: 1.9rem;
+            line-height: 1;
+        }
+
+        .tag-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 14px;
+        }
+
+        .tag {
+            background: #f5ede2;
+            border: 1.5px solid #e3d4c2;
+            color: #3e2e21;
+            padding: 10px 22px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 470;
+            box-shadow: 0 3px 0 #cfbeaa;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+            backdrop-filter: blur(4px);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .tag:hover {
+            background: #ffeada;
+            border-color: #c8aa8d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #c2ab96;
+        }
+
+        .tag.selected {
+            background: #a7c0b1;
+            border-color: #6f8b7c;
+            color: #1e2e24;
+            box-shadow: 0 3px 0 #5d7365;
+            transform: translateY(2px);
+            font-weight: 550;
+            border-width: 2px;
+        }
+
+        /* 额外因素 (补充) 区 */
+        .extra-section {
+            background: #f9f1e6;
+            border-radius: 36px;
+            padding: 20px 24px;
+            margin: 20px 0 26px;
+            border: 1px solid #e2d2be;
+            box-shadow: inset 0 2px 5px rgba(90, 60, 30, 0.03), 0 8px 12px -8px rgba(0,0,0,0.08);
+        }
+
+        .extra-title {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            font-weight: 500;
+            color: #5b4533;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .extra-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 28px 50px;
+        }
+
+        .extra-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .extra-label {
+            font-weight: 460;
+            color: #5f4a35;
+            min-width: 55px;
+        }
+
+        select {
+            background: #fffcf5;
+            border: 1.5px solid #cfbcab;
+            border-radius: 40px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            color: #2e241b;
+            font-weight: 440;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: border 0.2s;
+            min-width: 140px;
+        }
+
+        select:focus {
+            border-color: #9a826e;
+        }
+
+        /* 动作按钮 & 匹配结果 */
+        .action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .match-btn {
+            background: #d0b89f;
+            border: none;
+            border-bottom: 5px solid #a48d78;
+            color: #261e16;
+            padding: 16px 38px;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            font-weight: 560;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 7px 0 #9e8772, 0 8px 16px rgba(80, 50, 25, 0.12);
+            cursor: pointer;
+            transition: all 0.1s;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(5px);
+            background: #e1cdb8;
+            border-bottom-width: 5px;
+        }
+
+        .match-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #9e8772, 0 8px 16px rgba(80, 50, 25, 0.1);
+            border-bottom-width: 2px;
+        }
+
+        .match-btn i {
+            font-size: 1.7rem;
+        }
+
+        .match-hint {
+            color: #5e4d3b;
+            background: #efe3d6;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 0.98rem;
+        }
+
+        .result-panel {
+            margin-top: 36px;
+            background: #fbf5ec;
+            border-radius: 42px;
+            padding: 26px 24px 20px;
+            border: 1px solid #e0cdb8;
+            box-shadow: inset 0 1px 5px #fff8f0, 0 10px 15px -12px rgba(60,40,20,0.2);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+            font-size: 1.8rem;
+        }
+
+                        .song-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .song-card {
+            background: white;
+            border-radius: 40px;
+            padding: 14px 24px 14px 28px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            box-shadow: 0 4px 0 #dacbbc, 0 4px 10px rgba(120, 80, 50, 0.05);
+            border: 1px solid #e7d7c5;
+        }
+
+        .song-cover {
+            width: 50px;
+            height: 50px;
+            background: #dccfbf;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #4d3624;
+            box-shadow: inset 0 2px 5px rgba(62, 42, 22, 0.1);
+        }
+
+        .song-info {
+            flex: 2;
+            min-width: 180px;
+        }
+
+        .song-title {
+            font-weight: 650;
+            font-size: 1.3rem;
+            color: #2a1f15;
+            line-height: 1.3;
+        }
+
+        .song-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px 25px;
+            margin-top: 5px;
+            color: #7b6854;
+            font-size: 0.9rem;
+        }
+
+        .song-meta span {
+            background: #f3ebe2;
+            padding: 2px 12px;
+            border-radius: 50px;
+            font-weight: 430;
+        }
+
+        .play-btn {
+            margin-left: auto;
+            background: #c7b3a0;
+            border: none;
+            border-bottom: 3px solid #8f7b68;
+            color: #1f1a14;
+            padding: 10px 22px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 3px 0 #7f6c5a;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .play-btn:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+
+        .empty-message {
+            color: #9c897a;
+            padding: 20px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .reset-area {
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        .reset-link {
+            color: #6b5844;
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            text-decoration: underline dotted #bba690;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+
+        footer {
+            margin-top: 16px;
+            color: #b8a692;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .app-container { padding: 18px 14px; }
+            .tag { padding: 8px 18px; font-size: 1rem; }
+            .match-btn { font-size: 1.3rem; padding: 14px 26px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <h1>
+        🎧 炖一首歌 
+        <span>情绪音乐小厨</span>
+    </h1>
+    <div class="subhead">✨ 选季节·调情绪·定语言 · 再添点风味 ✨</div>
+
+    <!-- 核心三选：季节 / 情绪 / 歌词语言 -->
+    <div class="section">
+        <div class="section-title"><span class="emoji-icon">🌱❄️</span> 季节 · 天气基底</div>
+        <div class="tag-grid" id="season-group">
+            <div class="tag" data-type="season" data-value="春天">🌸 春天</div>
+            <div class="tag" data-type="season" data-value="夏天">☀️ 夏天</div>
+            <div class="tag" data-type="season" data-value="秋天">🍂 秋天</div>
+            <div class="tag" data-type="season" data-value="冬天">❄️ 冬天</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="emoji-icon">😊😢</span> 情绪 · 主调味</div>
+        <div class="tag-grid" id="mood-group">
+            <div class="tag" data-type="mood" data-value="愉快">😄 愉快</div>
+            <div class="tag" data-type="mood" data-value="平静">😌 平静</div>
+            <div class="tag" data-type="mood" data-value="难过">😔 难过</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="emoji-icon">🌍🎤</span> 歌词语言 · 语种</div>
+        <div class="tag-grid" id="lang-group">
+            <div class="tag" data-type="lang" data-value="中文">🇨🇳 中文</div>
+            <div class="tag" data-type="lang" data-value="粤语">🇭🇰 粤语</div>
+            <div class="tag" data-type="lang" data-value="英文">🇬🇧 英文</div>
+            <div class="tag" data-type="lang" data-value="日语">🇯🇵 日语</div>
+            <div class="tag" data-type="lang" data-value="小语种">🌍 小语种</div>
+            <div class="tag" data-type="lang" data-value="纯音乐">🎼 纯音乐</div>
+        </div>
+    </div>
+
+    <!-- 🧂 补充其他因素：风格、年代、乐器 (新增维度) -->
+    <div class="extra-section">
+        <div class="extra-title"><span>🧂 再加点风味 · 细化偏好</span> <span style="font-size:0.9rem; margin-left:12px; opacity:0.8;">(可选)</span></div>
+        <div class="extra-row">
+            <div class="extra-item">
+                <span class="extra-label">🎵 风格</span>
+                <select id="style-select">
+                    <option value="任意">任意风格</option>
+                    <option value="流行">流行</option>
+                    <option value="民谣">民谣</option>
+                    <option value="R&B">R&B/灵魂</option>
+                    <option value="摇滚">摇滚</option>
+                    <option value="电子">电子</option>
+                    <option value="古典">古典/原声</option>
+                    <option value="爵士">爵士</option>
+                </select>
+            </div>
+            <div class="extra-item">
+                <span class="extra-label">📅 年代</span>
+                <select id="era-select">
+                    <option value="任意">不限年代</option>
+                    <option value="经典">经典 (70-90s)</option>
+                    <option value="2000s">2000年代</option>
+                    <option value="2010s">2010年代</option>
+                    <option value="近年">近年 (2020+)</option>
+                </select>
+            </div>
+            <div class="extra-item">
+                <span class="extra-label">🎻 突出乐器</span>
+                <select id="instrument-select">
+                    <option value="任意">任意</option>
+                    <option value="钢琴">钢琴</option>
+                    <option value="吉他">吉他</option>
+                    <option value="弦乐">弦乐</option>
+                    <option value="电子合成器">合成器</option>
+                    <option value="鼓点">鼓/节奏</option>
+                </select>
+            </div>
+        </div>
+        <div style="font-size:0.9rem; margin-top: 15px; color:#7f6e5d;">✨ 这些“风味”会让推荐更精准，不选则保留更多可能性</div>
+    </div>
+
+    <!-- 操作区 -->
+    <div class="action-bar">
+        <button class="match-btn" id="match-button"><i>🍲</i> 炖出音乐 · 匹配歌单</button>
+        <div class="match-hint" id="selection-hint">👆 请先选择季节、情绪、语言</div>
+    </div>
+
+    <!-- 结果展示区 -->
+    <div class="result-panel" id="result-panel">
+        <div class="result-header">
+                        <span>🍜 今日音乐食谱</span>
+            <span style="font-size: 1rem; margin-left: auto; opacity: 0.7;" id="result-count"></span>
+        </div>
+        <div id="song-list-container" class="song-list">
+            <!-- 动态歌单渲染 -->
+        </div>
+        <div class="reset-area">
+            <button class="reset-link" id="clear-all">🧹 重置所有选择</button>
+        </div>
+    </div>
+    <footer>🎶 选你所爱 · 听你所选 —— 每一刻都有对的BGM</footer>
+</div>
+
+<script>
+    (function(){
+        "use strict";
+
+        // ---------- 模拟音乐库 ----------
+        // 每首歌都有属性: season, mood, lang, style, era, instrument, 以及展示字段
+        const musicLibrary = [
+            // 春天 · 愉快 · 中文
+            { title: "春风吹", artist: "方大同", season: "春天", mood: "愉快", lang: "中文", style: "R&B", era: "2000s", instrument: "吉他", coverEmoji: "🌸" },
+            { title: "晴天", artist: "周杰伦", season: "春天", mood: "愉快", lang: "中文", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "☀️" },
+            { title: "小幸运", artist: "田馥甄", season: "春天", mood: "愉快", lang: "中文", style: "流行", era: "2010s", instrument: "钢琴", coverEmoji: "🍀" },
+            // 春天平静
+            { title: "春风十里", artist: "鹿先森乐队", season: "春天", mood: "平静", lang: "中文", style: "民谣", era: "2010s", instrument: "吉他", coverEmoji: "🌿" },
+            { title: "儿时", artist: "刘昊霖", season: "春天", mood: "平静", lang: "中文", style: "民谣", era: "2010s", instrument: "吉他", coverEmoji: "🧸" },
+            // 春天难过
+            { title: "春の雪", artist: "岩崎琢 (纯音乐)", season: "春天", mood: "难过", lang: "纯音乐", style: "古典", era: "经典", instrument: "钢琴", coverEmoji: "❄️🌸" },
+
+            // 夏天愉快
+            { title: "夏日漱石", artist: "橘子海", season: "夏天", mood: "愉快", lang: "中文", style: "摇滚", era: "近年", instrument: "吉他", coverEmoji: "🌊" },
+            { title: "Happy", artist: "Pharrell Williams", season: "夏天", mood: "愉快", lang: "英文", style: "流行", era: "2010s", instrument: "鼓点", coverEmoji: "😄" },
+            { title: "打上花火", artist: "DAOKO×米津玄师", season: "夏天", mood: "愉快", lang: "日语", style: "流行", era: "2010s", instrument: "钢琴", coverEmoji: "🎆" },
+            // 夏天平静
+            { title: "Summer", artist: "久石让", season: "夏天", mood: "平静", lang: "纯音乐", style: "古典", era: "经典", instrument: "钢琴", coverEmoji: "🌻" },
+            { title: "Mojito", artist: "周杰伦", season: "夏天", mood: "愉快", lang: "中文", style: "流行", era: "近年", instrument: "小号", coverEmoji: "🍹" },
+            { title: "Señorita", artist: "Shawn Mendes, Camila Cabello", season: "夏天", mood: "愉快", lang: "英文", style: "流行", era: "2010s", instrument: "吉他", coverEmoji: "💃" },
+            // 夏天难过
+            { title: "夏夕空", artist: "中孝介", season: "夏天", mood: "难过", lang: "日语", style: "民谣", era: "2000s", instrument: "弦乐", coverEmoji: "🌌" },
+
+            // 秋天愉快
+            { title: "风吹麦浪", artist: "李健", season: "秋天", mood: "愉快", lang: "中文", style: "民谣", era: "2000s", instrument: "吉他", coverEmoji: "🌾" },
+            { title: "Autumn Leaves", artist: "Eric Clapton", season: "秋天", mood: "平静", lang: "英文", style: "爵士", era: "经典", instrument: "吉他", coverEmoji: "🍁" },
+            // 秋天平静
+            { title: "枫", artist: "周杰伦", season: "秋天", mood: "难过", lang: "中文", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "🍂" },
+            { title: "秋桜", artist: "山口百惠", season: "秋天", mood: "平静", lang: "日语", style: "流行", era: "经典", instrument: "弦乐", coverEmoji: "🌸" },
+            // 纯音乐秋天
+            { title: "Canon in D", artist: "Pachelbel", season: "秋天", mood: "平静", lang: "纯音乐", style: "古典", era: "经典", instrument: "弦乐", coverEmoji: "🎻" },
+
+            // 冬天愉快
+            { title: "雪の華", artist: "中島美嘉", season: "冬天", mood: "愉快", lang: "日语", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "❄️" },
+            { title: "Last Christmas", artist: "Wham!", season: "冬天", mood: "愉快", lang: "英文", style: "流行", era: "经典", instrument: "合成器", coverEmoji: "🎄" },
+            // 冬天平静
+            { title: "Winter Song", artist: "Leslie Odom Jr.", season: "冬天", mood: "平静", lang: "英文", style: "爵士", era: "近年", instrument: "钢琴", coverEmoji: "☃️" },
+            { title: "贝加尔湖畔", artist: "李健", season: "冬天", mood: "平静", lang: "中文", style: "民谣", era: "2010s", instrument: "钢琴", coverEmoji: "🏞️" },
+            // 冬天难过
+            { title: "The Night We Met", artist: "Lord Huron", season: "冬天", mood: "难过", lang: "英文", style: "民谣", era: "2010s", instrument: "吉他", coverEmoji: "🌙" },
+            
+            // 多语种 / 小语种 丰富
+            { title: "La Vie En Rose", artist: "Édith Piaf", season: "春天", mood: "愉快", lang: "小语种", style: "爵士", era: "经典", instrument: "手风琴", coverEmoji: "🌹" },
+            { title: "Bésame Mucho", artist: "Consuelo Velázquez", season: "夏天", mood: "平静", lang: "小语种", style: "拉丁", era: "经典", instrument: "吉他", coverEmoji: "💋" },
+            { title: "Ne Me Quitte Pas", artist: "Jacques Brel", season: "秋天", mood: "难过", lang: "小语种", style: "香颂", era: "经典", instrument: "钢琴", coverEmoji: "🥀" },
+            { title: "Lemon", artist: "米津玄师", season: "春天", mood: "难过", lang: "日语", style: "流行", era: "2010s", instrument: "钢琴", coverEmoji: "🍋" },
+            { title: "海阔天空", artist: "Beyond", season: "冬天", mood: "愉快", lang: "粤语", style: "摇滚", era: "经典", instrument: "吉他", coverEmoji: "🎸" },
+            { title: "喜帖街", artist: "谢安琪", season: "秋天", mood: "平静", lang: "粤语", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "🏘️" },
+            { title: "处处吻", artist: "杨千嬅", season: "夏天", mood: "愉快", lang: "粤语", style: "流行", era: "2000s", instrument: "鼓点", coverEmoji: "💋" },
+            { title: "Weightless", artist: "Marconi Union", season: "任意", mood: "平静", lang: "纯音乐", style: "电子", era: "2010s", instrument: "合成器", coverEmoji: "🌌" },
+            // 加一些流行风格
+            { title: "Shallow", artist: "Lady Gaga", season: "秋天", mood: "难过", lang: "英文", style: "流行", era: "2010s", instrument: "吉他", coverEmoji: "🎬" },
+        ];
+
+        // ---------- 状态管理 ----------
+        let selectedSeason = null;
+        let selectedMood = null;
+        let selectedLang = null;
+
+        // UI元素
+        const seasonTags = document.querySelectorAll('[data-type="season"]');
+        const moodTags = document.querySelectorAll('[data-type="mood"]');
+        const langTags = document.querySelectorAll('[data-type="lang"]');
+        const matchBtn = document.getElementById('match-button');
+        const hintEl = document.getElementById('selection-hint');
+        const songContainer = document.getElementById('song-list-container');
+        const resultCountSpan = document.getElementById('result-count');
+        const clearBtn = document.getElementById('clear-all');
+
+        const styleSelect = document.getElementById('style-select');
+        const eraSelect = document.getElementById('era-select');
+        const instrumentSelect = document.getElementById('instrument-select');
+
+        // 更新提示信息
+        function updateHint() {
+            const parts = [];
+            if (selectedSeason) parts.push(`🌱${selectedSeason}`);
+            if (selectedMood) parts.push(`🎭${selectedMood}`);
+            if (selectedLang) parts.push(`🎤${selectedLang}`);
+            if (parts.length === 0) hintEl.textContent = '👆 请先选择季节、情绪、语言';
+            else hintEl.textContent = `已选：${parts.join(' · ')}  ${parts.length<3?'(还差'+(3-parts.length)+'项)':'✓ 可以炖歌啦'}`;
+        }
+
+        // 标签点击处理
+        function handleTagClick(e) {
+            const tag = e.currentTarget;
+            const type = tag.dataset.type;
+            const value = tag.dataset.value;
+            
+            if (type === 'season') {
+                seasonTags.forEach(t => t.classList.remove('selected'));
+                if (selectedSeason === value) selectedSeason = null;
+                else { selectedSeason = value; tag.classList.add('selected'); }
+            } else if (type === 'mood') {
+                moodTags.forEach(t => t.classList.remove('selected'));
+                if (selectedMood === value) selectedMood = null;
+                else { selectedMood = value; tag.classList.add('selected'); }
+            } else if (type === 'lang') {
+                langTags.forEach(t => t.classList.remove('selected'));
+                if (selectedLang === value) selectedLang = null;
+                else { selectedLang = value; tag.classList.add('selected'); }
+            }
+            // 重新高亮
+            if (selectedSeason) document.querySelector(`[data-type="season"][data-value="${selectedSeason}"]`)?.classList.add('selected');
+            if (selectedMood) document.querySelector(`[data-type="mood"][data-value="${selectedMood}"]`)?.classList.add('selected');
+            if (selectedLang) document.querySelector(`[data-type="lang"][data-value="${selectedLang}"]`)?.classList.add('selected');
+            
+            updateHint();
+        }
+
+        seasonTags.forEach(t => t.addEventListener('click', handleTagClick));
+        moodTags.forEach(t => t.addEventListener('click', handleTagClick));
+        langTags.forEach(t => t.addEventListener('click', handleTagClick));
+
+        // 清除所有选择
+        function resetAll() {
+            selectedSeason = selectedMood = selectedLang = null;
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
+            styleSelect.value = '任意';
+            eraSelect.value = '任意';
+            instrumentSelect.value = '任意';
+            updateHint();
+            renderSongs([]); 
+            resultCountSpan.textContent = '';
+        }
+
+        // 匹配逻辑
+        function findMatchingSongs() {
+            if (!selectedSeason || !selectedMood || !selectedLang) {
+                alert('🍲 请先选齐三种主要食材：季节、情绪、歌词语言～');
+                return [];
+            }
+
+            const styleFilter = styleSelect.value;
+            const eraFilter = eraSelect.value;
+            const instrumentFilter = instrumentSelect.value;
+
+            return musicLibrary.filter(song => {
+                // 核心必须匹配
+                if (song.season !== selectedSeason && song.season !== '任意') return false;
+                if (song.mood !== selectedMood) return false;
+                if (song.lang !== selectedLang) return false;
+                
+                // 附加筛选 (如果选了“任意”则跳过)
+                if (styleFilter !== '任意' && song.style !== styleFilter) return false;
+                if (eraFilter !== '任意' && song.era !== eraFilter) return false;
+                if (instrumentFilter !== '任意' && song.instrument !== instrumentFilter) return false;
+                
+                return true;
+            });
+        }
+
+        // 渲染歌曲
+        function renderSongs(songs) {
+            if (!songs || songs.length === 0) {
+                songContainer.innerHTML = `<div class="empty-message">🥄 没有完全匹配的歌曲，试试调整“风味”或者放宽条件～</div>`;
+                resultCountSpan.textContent = '(0 首)';
+                return;
+            }
+            resultCountSpan.textContent = `(${songs.length} 首)`;
+            let html = '';
+            songs.forEach(song => {
+                html += `
+                    <div class="song-card">
+                        <div class="song-cover">${song.coverEmoji || '🎵'}</div>
+                        <div class="song-info">
+                            <div class="song-title">${song.title} · ${song.artist}</div>
+                            <div class="song-meta">
+                                <span>${song.season} · ${song.mood}</span>
+                                <span>${song.lang}</span>
+                                <span>${song.style || ''}</span>
+                                <span>🎻 ${song.instrument || '多元'}</span>
+                            </div>
+                        </div>
+                        <button class="play-btn" data-song="${song.title}" data-artist="${song.artist}">▶ 试听</button>
+                    </div>
+                `;
+            });
+            songContainer.innerHTML = html;
+            // 给播放按钮加模拟提示
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const title = btn.dataset.song;
+                    alert(`🎧 正在播放: ${title} (演示交互，实际可接API)`);
+                });
+            });
+        }
+
+        function performMatch() {
+            const matched = findMatchingSongs();
+            renderSongs(matched);
+        }
+
+        matchBtn.addEventListener('click', performMatch);
+        clearBtn.addEventListener('click', resetAll);
+
+        // 初始化提示
+        updateHint();
+        renderSongs([]);
+    })();
+</script>
+</body>
+</html>
+
