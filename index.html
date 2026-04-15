@@ -482,67 +482,23 @@
     (function(){
         "use strict";
 
-        // ---------- 模拟音乐库 ----------
-        // 每首歌都有属性: season, mood, lang, style, era, instrument, 以及展示字段
+        // ---------- 音乐库（新增 audioUrl 字段）----------
         const musicLibrary = [
-            // 春天 · 愉快 · 中文
-            { title: "春风吹", artist: "方大同", season: "春天", mood: "愉快", lang: "中文", style: "R&B", era: "2000s", instrument: "吉他", coverEmoji: "🌸" },
-            { title: "晴天", artist: "周杰伦", season: "春天", mood: "愉快", lang: "中文", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "☀️" },
-            { title: "小幸运", artist: "田馥甄", season: "春天", mood: "愉快", lang: "中文", style: "流行", era: "2010s", instrument: "钢琴", coverEmoji: "🍀" },
-            // 春天平静
-            { title: "春风十里", artist: "鹿先森乐队", season: "春天", mood: "平静", lang: "中文", style: "民谣", era: "2010s", instrument: "吉他", coverEmoji: "🌿" },
-            { title: "儿时", artist: "刘昊霖", season: "春天", mood: "平静", lang: "中文", style: "民谣", era: "2010s", instrument: "吉他", coverEmoji: "🧸" },
-            // 春天难过
-            { title: "春の雪", artist: "岩崎琢 (纯音乐)", season: "春天", mood: "难过", lang: "纯音乐", style: "古典", era: "经典", instrument: "钢琴", coverEmoji: "❄️🌸" },
-
-            // 夏天愉快
-            { title: "夏日漱石", artist: "橘子海", season: "夏天", mood: "愉快", lang: "中文", style: "摇滚", era: "近年", instrument: "吉他", coverEmoji: "🌊" },
-            { title: "Happy", artist: "Pharrell Williams", season: "夏天", mood: "愉快", lang: "英文", style: "流行", era: "2010s", instrument: "鼓点", coverEmoji: "😄" },
-            { title: "打上花火", artist: "DAOKO×米津玄师", season: "夏天", mood: "愉快", lang: "日语", style: "流行", era: "2010s", instrument: "钢琴", coverEmoji: "🎆" },
-            // 夏天平静
-            { title: "Summer", artist: "久石让", season: "夏天", mood: "平静", lang: "纯音乐", style: "古典", era: "经典", instrument: "钢琴", coverEmoji: "🌻" },
-            { title: "Mojito", artist: "周杰伦", season: "夏天", mood: "愉快", lang: "中文", style: "流行", era: "近年", instrument: "小号", coverEmoji: "🍹" },
-            { title: "Señorita", artist: "Shawn Mendes, Camila Cabello", season: "夏天", mood: "愉快", lang: "英文", style: "流行", era: "2010s", instrument: "吉他", coverEmoji: "💃" },
-            // 夏天难过
-            { title: "夏夕空", artist: "中孝介", season: "夏天", mood: "难过", lang: "日语", style: "民谣", era: "2000s", instrument: "弦乐", coverEmoji: "🌌" },
-
-            // 秋天愉快
-            { title: "风吹麦浪", artist: "李健", season: "秋天", mood: "愉快", lang: "中文", style: "民谣", era: "2000s", instrument: "吉他", coverEmoji: "🌾" },
-            { title: "Autumn Leaves", artist: "Eric Clapton", season: "秋天", mood: "平静", lang: "英文", style: "爵士", era: "经典", instrument: "吉他", coverEmoji: "🍁" },
-            // 秋天平静
-            { title: "枫", artist: "周杰伦", season: "秋天", mood: "难过", lang: "中文", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "🍂" },
-            { title: "秋桜", artist: "山口百惠", season: "秋天", mood: "平静", lang: "日语", style: "流行", era: "经典", instrument: "弦乐", coverEmoji: "🌸" },
-            // 纯音乐秋天
-            { title: "Canon in D", artist: "Pachelbel", season: "秋天", mood: "平静", lang: "纯音乐", style: "古典", era: "经典", instrument: "弦乐", coverEmoji: "🎻" },
-
-            // 冬天愉快
-            { title: "雪の華", artist: "中島美嘉", season: "冬天", mood: "愉快", lang: "日语", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "❄️" },
-            { title: "Last Christmas", artist: "Wham!", season: "冬天", mood: "愉快", lang: "英文", style: "流行", era: "经典", instrument: "合成器", coverEmoji: "🎄" },
-            // 冬天平静
-            { title: "Winter Song", artist: "Leslie Odom Jr.", season: "冬天", mood: "平静", lang: "英文", style: "爵士", era: "近年", instrument: "钢琴", coverEmoji: "☃️" },
-            { title: "贝加尔湖畔", artist: "李健", season: "冬天", mood: "平静", lang: "中文", style: "民谣", era: "2010s", instrument: "钢琴", coverEmoji: "🏞️" },
-            // 冬天难过
-            { title: "The Night We Met", artist: "Lord Huron", season: "冬天", mood: "难过", lang: "英文", style: "民谣", era: "2010s", instrument: "吉他", coverEmoji: "🌙" },
-            
-            // 多语种 / 小语种 丰富
-            { title: "La Vie En Rose", artist: "Édith Piaf", season: "春天", mood: "愉快", lang: "小语种", style: "爵士", era: "经典", instrument: "手风琴", coverEmoji: "🌹" },
-            { title: "Bésame Mucho", artist: "Consuelo Velázquez", season: "夏天", mood: "平静", lang: "小语种", style: "拉丁", era: "经典", instrument: "吉他", coverEmoji: "💋" },
-            { title: "Ne Me Quitte Pas", artist: "Jacques Brel", season: "秋天", mood: "难过", lang: "小语种", style: "香颂", era: "经典", instrument: "钢琴", coverEmoji: "🥀" },
-            { title: "Lemon", artist: "米津玄师", season: "春天", mood: "难过", lang: "日语", style: "流行", era: "2010s", instrument: "钢琴", coverEmoji: "🍋" },
-            { title: "海阔天空", artist: "Beyond", season: "冬天", mood: "愉快", lang: "粤语", style: "摇滚", era: "经典", instrument: "吉他", coverEmoji: "🎸" },
-            { title: "喜帖街", artist: "谢安琪", season: "秋天", mood: "平静", lang: "粤语", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "🏘️" },
-            { title: "处处吻", artist: "杨千嬅", season: "夏天", mood: "愉快", lang: "粤语", style: "流行", era: "2000s", instrument: "鼓点", coverEmoji: "💋" },
-            { title: "Weightless", artist: "Marconi Union", season: "任意", mood: "平静", lang: "纯音乐", style: "电子", era: "2010s", instrument: "合成器", coverEmoji: "🌌" },
-            // 加一些流行风格
-            { title: "Shallow", artist: "Lady Gaga", season: "秋天", mood: "难过", lang: "英文", style: "流行", era: "2010s", instrument: "吉他", coverEmoji: "🎬" },
+            { 
+                title: "春风吹", artist: "方大同", season: "春天", mood: "愉快", lang: "中文", 
+                style: "R&B", era: "2000s", instrument: "吉他", coverEmoji: "🌸",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"  // 示例音频，请替换为你的本地路径如 "music/spring1.mp3"
+            },
+            { 
+                title: "晴天", artist: "周杰伦", season: "春天", mood: "愉快", lang: "中文", 
+                style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "☀️",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+            },
+            // ... 其他歌曲自行添加 audioUrl 字段
         ];
 
         // ---------- 状态管理 ----------
-        let selectedSeason = null;
-        let selectedMood = null;
-        let selectedLang = null;
-
-        // UI元素
+        let selectedSeason = null, selectedMood = null, selectedLang = null;
         const seasonTags = document.querySelectorAll('[data-type="season"]');
         const moodTags = document.querySelectorAll('[data-type="mood"]');
         const langTags = document.querySelectorAll('[data-type="lang"]');
@@ -551,45 +507,27 @@
         const songContainer = document.getElementById('song-list-container');
         const resultCountSpan = document.getElementById('result-count');
         const clearBtn = document.getElementById('clear-all');
-
         const styleSelect = document.getElementById('style-select');
         const eraSelect = document.getElementById('era-select');
         const instrumentSelect = document.getElementById('instrument-select');
 
-        // 更新提示信息
+        // 当前全局播放器实例（用于保证同时只播放一首）
+        let currentAudio = null;
+
+        // ---------- 辅助函数 ----------
         function updateHint() {
             const parts = [];
             if (selectedSeason) parts.push(`🌱${selectedSeason}`);
             if (selectedMood) parts.push(`🎭${selectedMood}`);
             if (selectedLang) parts.push(`🎤${selectedLang}`);
-            if (parts.length === 0) hintEl.textContent = '👆 请先选择季节、情绪、语言';
-            else hintEl.textContent = `已选：${parts.join(' · ')}  ${parts.length<3?'(还差'+(3-parts.length)+'项)':'✓ 可以炖歌啦'}`;
+            hintEl.textContent = parts.length === 0 ? '👆 请先选择季节、情绪、语言' : `已选：${parts.join(' · ')}  ${parts.length<3?'(还差'+(3-parts.length)+'项)':'✓ 可以炖歌啦'}`;
         }
 
-        // 标签点击处理
         function handleTagClick(e) {
-            const tag = e.currentTarget;
-            const type = tag.dataset.type;
-            const value = tag.dataset.value;
-            
-            if (type === 'season') {
-                seasonTags.forEach(t => t.classList.remove('selected'));
-                if (selectedSeason === value) selectedSeason = null;
-                else { selectedSeason = value; tag.classList.add('selected'); }
-            } else if (type === 'mood') {
-                moodTags.forEach(t => t.classList.remove('selected'));
-                if (selectedMood === value) selectedMood = null;
-                else { selectedMood = value; tag.classList.add('selected'); }
-            } else if (type === 'lang') {
-                langTags.forEach(t => t.classList.remove('selected'));
-                if (selectedLang === value) selectedLang = null;
-                else { selectedLang = value; tag.classList.add('selected'); }
-            }
-            // 重新高亮
-            if (selectedSeason) document.querySelector(`[data-type="season"][data-value="${selectedSeason}"]`)?.classList.add('selected');
-            if (selectedMood) document.querySelector(`[data-type="mood"][data-value="${selectedMood}"]`)?.classList.add('selected');
-            if (selectedLang) document.querySelector(`[data-type="lang"][data-value="${selectedLang}"]`)?.classList.add('selected');
-            
+            const tag = e.currentTarget, type = tag.dataset.type, value = tag.dataset.value;
+            if (type === 'season') { seasonTags.forEach(t => t.classList.remove('selected')); if (selectedSeason === value) selectedSeason = null; else { selectedSeason = value; tag.classList.add('selected'); } }
+            else if (type === 'mood') { moodTags.forEach(t => t.classList.remove('selected')); if (selectedMood === value) selectedMood = null; else { selectedMood = value; tag.classList.add('selected'); } }
+            else if (type === 'lang') { langTags.forEach(t => t.classList.remove('selected')); if (selectedLang === value) selectedLang = null; else { selectedLang = value; tag.classList.add('selected'); } }
             updateHint();
         }
 
@@ -597,56 +535,43 @@
         moodTags.forEach(t => t.addEventListener('click', handleTagClick));
         langTags.forEach(t => t.addEventListener('click', handleTagClick));
 
-        // 清除所有选择
         function resetAll() {
             selectedSeason = selectedMood = selectedLang = null;
             document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
-            styleSelect.value = '任意';
-            eraSelect.value = '任意';
-            instrumentSelect.value = '任意';
+            styleSelect.value = eraSelect.value = instrumentSelect.value = '任意';
             updateHint();
-            renderSongs([]); 
+            renderSongs([]);
             resultCountSpan.textContent = '';
         }
 
-        // 匹配逻辑
         function findMatchingSongs() {
-            if (!selectedSeason || !selectedMood || !selectedLang) {
-                alert('🍲 请先选齐三种主要食材：季节、情绪、歌词语言～');
-                return [];
-            }
-
-            const styleFilter = styleSelect.value;
-            const eraFilter = eraSelect.value;
-            const instrumentFilter = instrumentSelect.value;
-
+            if (!selectedSeason || !selectedMood || !selectedLang) { alert('🍲 请先选齐三种主要食材：季节、情绪、歌词语言～'); return []; }
             return musicLibrary.filter(song => {
-                // 核心必须匹配
                 if (song.season !== selectedSeason && song.season !== '任意') return false;
                 if (song.mood !== selectedMood) return false;
                 if (song.lang !== selectedLang) return false;
-                
-                // 附加筛选 (如果选了“任意”则跳过)
-                if (styleFilter !== '任意' && song.style !== styleFilter) return false;
-                if (eraFilter !== '任意' && song.era !== eraFilter) return false;
-                if (instrumentFilter !== '任意' && song.instrument !== instrumentFilter) return false;
-                
+                if (styleSelect.value !== '任意' && song.style !== styleSelect.value) return false;
+                if (eraSelect.value !== '任意' && song.era !== eraSelect.value) return false;
+                if (instrumentSelect.value !== '任意' && song.instrument !== instrumentSelect.value) return false;
                 return true;
             });
         }
 
-        // 渲染歌曲
+        // ---------- 渲染歌曲（带播放器和进度条）----------
         function renderSongs(songs) {
-            if (!songs || songs.length === 0) {
-                songContainer.innerHTML = `<div class="empty-message">🥄 没有完全匹配的歌曲，试试调整“风味”或者放宽条件～</div>`;
+            if (!songs.length) {
+                songContainer.innerHTML = `<div class="empty-message">🥄 没有完全匹配的歌曲，试试调整“风味”～</div>`;
                 resultCountSpan.textContent = '(0 首)';
                 return;
             }
             resultCountSpan.textContent = `(${songs.length} 首)`;
+
             let html = '';
-            songs.forEach(song => {
+            songs.forEach((song, index) => {
+                // 每个播放器使用唯一ID，避免冲突
+                const playerId = `player-${Date.now()}-${index}`;
                 html += `
-                    <div class="song-card">
+                    <div class="song-card" data-player-id="${playerId}">
                         <div class="song-cover">${song.coverEmoji || '🎵'}</div>
                         <div class="song-info">
                             <div class="song-title">${song.title} · ${song.artist}</div>
@@ -656,31 +581,115 @@
                                 <span>${song.style || ''}</span>
                                 <span>🎻 ${song.instrument || '多元'}</span>
                             </div>
+                            <!-- 播放器区域（初始隐藏） -->
+                            <div class="player-section" id="${playerId}" style="display:none; margin-top:12px;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <button class="play-pause-btn" data-playing="false">▶</button>
+                                    <span class="time-display">00:00 / 00:00</span>
+                                </div>
+                                <input type="range" class="progress-bar" value="0" step="0.1" style="width:100%; margin-top:8px;">
+                            </div>
                         </div>
-                        <button class="play-btn" data-song="${song.title}" data-artist="${song.artist}">▶ 试听</button>
+                        <button class="play-btn" data-song-index="${index}">▶ 试听</button>
                     </div>
                 `;
             });
             songContainer.innerHTML = html;
-            // 给播放按钮加模拟提示
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const title = btn.dataset.song;
-                    alert(`🎧 正在播放: ${title} (演示交互，实际可接API)`);
+
+            // 为每个“试听”按钮绑定事件，用于展开播放器并加载音频
+            document.querySelectorAll('.play-btn').forEach((btn, idx) => {
+                const song = songs[idx];
+                const card = btn.closest('.song-card');
+                const playerId = card.dataset.playerId;
+                const playerDiv = document.getElementById(playerId);
+                const playPauseBtn = playerDiv.querySelector('.play-pause-btn');
+                const progressBar = playerDiv.querySelector('.progress-bar');
+                const timeDisplay = playerDiv.querySelector('.time-display');
+
+                let audio = null; // 该卡片专属的音频对象
+
+                // 点击“试听”按钮：显示播放器并初始化音频
+                btn.addEventListener('click', () => {
+                    // 如果全局有正在播放的其他音频，先暂停并重置
+                    if (currentAudio && currentAudio !== audio) {
+                        currentAudio.pause();
+                        // 可以在这里重置上一个播放器的按钮状态，此处简化处理
+                    }
+
+                    // 隐藏其他所有播放器（可选，保持界面整洁）
+                    document.querySelectorAll('.player-section').forEach(p => p.style.display = 'none');
+                    // 显示当前播放器
+                    playerDiv.style.display = 'block';
+
+                    // 如果还没创建 Audio 对象，则创建
+                    if (!audio) {
+                        audio = new Audio(song.audioUrl);
+                        // 绑定事件：更新进度条和时间
+                        audio.addEventListener('loadedmetadata', () => {
+                            progressBar.max = audio.duration;
+                            updateTimeDisplay();
+                        });
+                        audio.addEventListener('timeupdate', () => {
+                            progressBar.value = audio.currentTime;
+                            updateTimeDisplay();
+                        });
+                        audio.addEventListener('ended', () => {
+                            playPauseBtn.textContent = '▶';
+                            playPauseBtn.dataset.playing = 'false';
+                        });
+
+                        // 进度条拖动
+                        progressBar.addEventListener('input', () => {
+                            audio.currentTime = progressBar.value;
+                            updateTimeDisplay();
+                        });
+
+                        function updateTimeDisplay() {
+                            const current = formatTime(audio.currentTime);
+                            const total = formatTime(audio.duration || 0);
+                            timeDisplay.textContent = `${current} / ${total}`;
+                        }
+                    }
+
+                    // 播放/暂停按钮逻辑
+                    playPauseBtn.onclick = () => {
+                        if (audio.paused) {
+                            // 暂停全局其他音频
+                            if (currentAudio && currentAudio !== audio) currentAudio.pause();
+                            audio.play();
+                            playPauseBtn.textContent = '⏸';
+                            playPauseBtn.dataset.playing = 'true';
+                            currentAudio = audio;
+                        } else {
+                            audio.pause();
+                            playPauseBtn.textContent = '▶';
+                            playPauseBtn.dataset.playing = 'false';
+                            currentAudio = null;
+                        }
+                    };
+
+                    // 自动播放
+                    if (currentAudio && currentAudio !== audio) currentAudio.pause();
+                    audio.play();
+                    playPauseBtn.textContent = '⏸';
+                    playPauseBtn.dataset.playing = 'true';
+                    currentAudio = audio;
                 });
             });
         }
 
-        function performMatch() {
-            const matched = findMatchingSongs();
-            renderSongs(matched);
+        // 时间格式化辅助函数
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '00:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
-        matchBtn.addEventListener('click', performMatch);
+        matchBtn.addEventListener('click', () => renderSongs(findMatchingSongs()));
         clearBtn.addEventListener('click', resetAll);
 
-        // 初始化提示
+        // 初始化
         updateHint();
         renderSongs([]);
     })();
