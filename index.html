@@ -5,40 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>🎵 情绪音乐小厨 · 炖一首歌</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * {box-sizing: border-box;margin: 0;padding: 0;}
 
-        body {
-            background: linear-gradient(145deg, #fef9e7 0%, #fff7e6 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
-            padding: 20px;
-            margin: 0;
-            color: #2e241b;
-        }
+        body {background: linear-gradient(145deg, #fef9e7 0%, #fff7e6 100%);min-height: 100vh;display: flex;align-items: center;
+            justify-content: center;font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;padding: 20px;margin: 0;
+            color: #2e241b;}
 
-        .app-container {
-            max-width: 1100px;
-            width: 100%;
-            background: rgba(255, 251, 240, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 48px;
-            padding: 28px 24px 36px;
-            box-shadow: 0 25px 45px -10px rgba(60, 40, 20, 0.2),
+        .app-container {max-width: 1100px;width: 100%;background: rgba(255, 251, 240, 0.85);backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px);
+            border-radius: 48px;padding: 28px 24px 36px;box-shadow: 0 25px 45px -10px rgba(60, 40, 20, 0.2),
                         0 8px 18px rgba(0,0,0,0.05),
                         inset 0 1px 0 0 rgba(255,255,245,0.6);
-            border: 1px solid #f0e7d6;
-        }
+            border: 1px solid #f0e7d6;}
 
-        h1 {
-            display: flex;
+        h1 {display: flex;
             align-items: center;
             gap: 12px;
             font-weight: 500;
@@ -46,35 +25,27 @@
             letter-spacing: -0.01em;
             color: #4a3729;
             margin-bottom: 16px;
-            padding-left: 8px;
-        }
+            padding-left: 8px;}
 
-        h1 span {
-            background: #d9c5b0;
+        h1 span {background: #d9c5b0;
             padding: 5px 16px;
             border-radius: 80px;
             font-size: 1rem;
             font-weight: 400;
             color: #2b1e14;
-            opacity: 0.8;
-        }
+            opacity: 0.8;}
 
-        .subhead {
-            margin-bottom: 28px;
+        .subhead {margin-bottom: 28px;
             margin-top: -8px;
             padding-left: 12px;
             color: #7a6856;
             font-weight: 400;
-            border-left: 4px solid #e3cdb1;
-        }
+            border-left: 4px solid #e3cdb1;}
 
         /* 食材/标签 选择区域 */
-        .section {
-            margin-bottom: 32px;
-        }
+        .section {margin-bottom: 32px;}
 
-        .section-title {
-            display: flex;
+        .section-title {display: flex;
             align-items: center;
             gap: 10px;
             font-size: 1.5rem;
@@ -82,22 +53,16 @@
             margin-bottom: 18px;
             color: #4f3e2e;
             border-bottom: 2px dashed #dccbb8;
-            padding-bottom: 8px;
-        }
+            padding-bottom: 8px;}
 
-        .emoji-icon {
-            font-size: 1.9rem;
-            line-height: 1;
-        }
+        .emoji-icon {font-size: 1.9rem;
+            line-height: 1;}
 
-        .tag-grid {
-            display: flex;
+        .tag-grid {display: flex;
             flex-wrap: wrap;
-            gap: 12px 14px;
-        }
+            gap: 12px 14px;}
 
-        .tag {
-            background: #f5ede2;
+        .tag {background: #f5ede2;
             border: 1.5px solid #e3d4c2;
             color: #3e2e21;
             padding: 10px 22px;
@@ -112,8 +77,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            letter-spacing: 0.3px;
-        }
+            letter-spacing: 0.3px;}
 
         .tag:hover {
             background: #ffeada;
@@ -487,7 +451,7 @@
             { title: "春风吹", artist: "方大同", season: "春天", mood: "愉快", lang: "中文", style: "R&B", era: "2000s", instrument: "吉他", coverEmoji: "🌸",audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"  // 示例音频，请替换为你的本地路径如 "music/spring1.mp3"
             },
             { title: "晴天", artist: "周杰伦", season: "春天", mood: "愉快", lang: "中文", style: "流行", era: "2000s", instrument: "钢琴", coverEmoji: "☀️",audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"},
-            {title: "There For You", artist: "Martin Garrix & Troye Sivan", season: "夏天", mood: "愉快", lang: "英文", style: "电子", era: "2010s", instrument: "合成器", coverEmoji: "🎧", audioUrl:"music/ThereForYou.mp3" },
+            {title: "There For You", artist: "Martin Garrix & Troye Sivan", season: "夏天", mood: "愉快", lang: "英文", style: "电子", era: "2010s", instrument: "合成器", coverEmoji: "🎧", audioUrl:"https://github.com/torreon10/mood-muisic-kitchen/tree/main/music/ThereForYou.mp3" },
             // ... 其他歌曲自行添加 audioUrl 字段
         ];
 
